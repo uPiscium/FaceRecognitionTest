@@ -1,19 +1,25 @@
-import face_recognition
+from image import ImageLoader
+from recognizer import Recognizer
+from window import Window
 
-def Test():
-    picture_of_me = face_recognition.load_image_file("images/A.jpeg")
-    my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
+# Load the image
+loader = ImageLoader()
+loader.GenerateFaceSetFromDirectory("facerecognitiontest/images")
 
-# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
+# Create the recognizer
+recognizer = Recognizer(loader.images)
 
-    unknown_picture = face_recognition.load_image_file("images/B.jpeg")
-    unknown_face_encoding = face_recognition.face_encodings(unknown_picture)[0]
+# Create the window
+window = Window("Face Recognition Test")
 
-# Now we can see the two face encodings are of the same person with `compare_faces`!
+while True:
+    window.Update()
+    frame = window.GetShrinkFrame()
+    recognizer.ProcessFrame(frame)
+    window.DrawInfo(recognizer)
+    window.ShowFrame()
 
-    results = face_recognition.compare_faces([my_face_encoding], unknown_face_encoding)
+    if window.WaitKey("q"):
+        break
 
-    if results[0] == True:
-        print("It's a picture of me!")
-    else:
-        print("It's not a picture of me!")
+window.Close()

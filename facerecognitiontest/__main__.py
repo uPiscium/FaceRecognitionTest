@@ -1,4 +1,1 @@
-from test import Test
-
-Test()
-
+import test
