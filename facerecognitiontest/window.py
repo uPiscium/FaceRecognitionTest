@@ -5,6 +5,10 @@ from recognizer import Recognizer
 
 
 class Window:
+    """
+    ローカル実行時に画面を表示するためのクラス
+    """
+
     def __init__(self, title: str) -> None:
         self.captureDevice: cv2.VideoCapture = cv2.VideoCapture(0)
         self.title = title
